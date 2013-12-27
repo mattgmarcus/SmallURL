@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block container %}
+  <form id="submit" action="/create-handle" method="post">
+    URL to be shortened: <input type="text" name="original_url">
+    Shortened url: site.com/<input type="text" name="handle">
+    <input type="submit" value="send to server">
+  </form>
+  {% if error_msg %}
+    {{ error_msg }}
+  {% endif %}
+{% endblock %}

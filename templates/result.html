@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block title %}Success{% endblock %}
+{% block container %}
+  <a href="/">Back</a>
+  {% if handle %}
+	<p>{{ handle }}</p>
+  {% endif %}
+  {% if url %}
+	<p>{{ url }}</p>
+  {% endif %}
+{% endblock %}
