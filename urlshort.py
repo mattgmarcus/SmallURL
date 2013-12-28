@@ -4,14 +4,20 @@ from urlparse import urlparse
 from pymongo import MongoClient
 
 app = Flask(__name__)
-url_collection = None
-
+#url_collection = None
+'''
 #Function to initialize database by connecting to it and getting the collection we use
 def initDatabase():
     client = MongoClient("mongodb://mattgmarcus:smallurl@linus.mongohq.com:10057/SmallURL")
     database = client.SmallURL
+    database.authenticate("mattgmarcus", "smallurl")
     global url_collection 
     url_collection = database.url_collection
+    url_collection.insert({"handle": "adfstest", "url": "uadfsrl", "num_visits": 0})
+'''
+client = MongoClient("mongodb://mattgmarcus:smallurl@linus.mongohq.com:10057/SmallURL")                                                                                                                 
+database = client.SmallURL                                                                                                                                                                              
+url_collection = database.url_collection
 
 #Add an entry to the database for the handle/url pair
 def addHandle(handle, url):
@@ -46,18 +52,19 @@ def createHandle():
     #Get url and handle from form
     handle = request.form["handle"].lower()
     url = request.form["original_url"]
-
+    
     #Check that the inputs are valid and in the proper format
     if not isValidEntry(handle, url):
         return render_template("index.html", error_msg="Invalid url/handle. Try again")
     url = normalizeURL(url)
-
+    
     #Add the shortened url if it doesn't exist yet
     if not handleExists(handle):
         addHandle(handle, url)
         return render_template("result.html", handle=handle, url=url)
     else:
         return render_template("index.html", error_msg="Shortened URL already taken, try again")
+    return 'hi'
 
 @app.route("/<handle>")
 def redirectUser(handle):
@@ -71,6 +78,6 @@ def redirectUser(handle):
 
 
 if __name__=="__main__":
-    initDatabase()
+    #initDatabase()
     p = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=p)
+    app.run(host="0.0.0.0", port=p, debug=True)
