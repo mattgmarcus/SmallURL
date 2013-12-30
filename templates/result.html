@@ -1,11 +1,21 @@
 {% extends "layout.html" %}
-{% block title %}Success{% endblock %}
 {% block container %}
-  <a href="/">Back</a>
-  {% if handle %}
-	<p>{{ handle }}</p>
-  {% endif %}
-  {% if url %}
-	<p>{{ url }}</p>
-  {% endif %}
+<div class="row">
+  <div class="col-md-12">
+    <p>Here's your shortened URL for {% if url %}{{ url }}{% endif %}: <a id="shorturl">http://smlurl.herokuapp.com/{% if handle %}{{ handle }}{% endif %}</a></p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <p><a href="/">Click here to go back to the home page</a></p>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+        link = $("#shorturl").text();
+        $("#shorturl").attr("href", link);
+  });
+</script>
 {% endblock %}
